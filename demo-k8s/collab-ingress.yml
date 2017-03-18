@@ -1,0 +1,18 @@
+# This is optional, but it's useful during development to be able to query solr directly
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: collab
+  namespace: topics
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/documents # https://github.com/substance/substance/blob/v1.0.0-beta.6.5/collab/DocumentServer.js#L9
+        backend:
+          serviceName: collab
+          servicePort: 80
+      - path: /author
+        backend:
+          serviceName: collab
+          servicePort: 80
