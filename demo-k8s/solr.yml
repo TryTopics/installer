@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: solr
+  namespace: topics
+spec:
+  serviceName: "solr"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: solr
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: solr
+          #image: solr:6.4@sha256:2d74cd53ce4d43be58d4074302f4b7f1d75b7a73b07ef6034bebd2e5f2986245
+          image: solsson/repos-indexing-solr@sha256:ec91390d8de1bf4bb792cded5fe622812c5f88a916bb586b84b084186bf583e6
+          ports:
+            - name: http
+              containerPort: 8983
+          # repos-indexing is designed to re-index as needed so persistent storage is not required

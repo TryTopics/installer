@@ -1,0 +1,13 @@
+# This is optional, but it's useful during development to be able to query solr directly
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: solr
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /solr
+        backend:
+          serviceName: solr
+          servicePort: 8983

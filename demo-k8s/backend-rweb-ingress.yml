@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: svn
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /svn
+        backend:
+          serviceName: svn
+          servicePort: 80
+      - path: /repos-web
+        backend:
+          serviceName: svn
+          servicePort: 80
+      - path: /repos-plugins
+        backend:
+          serviceName: svn
+          servicePort: 80

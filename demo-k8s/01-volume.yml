@@ -1,0 +1,21 @@
+#gcloud compute disks create --size=10GB --type=pd-standard topics-svn-0
+---
+# TODO investigate why minikube provisions a volume without this resource, and how to configure that volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: topics-svn
+  labels:
+    app: svn
+    namespace: topics
+    podindex: "0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+#  gcePersistentDisk:
+#    pdName: topics-svn-0
+#    fsType: ext4
+  hostPath:
+    path: /tmp/topics-test-data/svn

@@ -1,0 +1,17 @@
+# TODO looks like minikube automatically creates a PV, regardless of matchLabels
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datadir-svn-0
+  namespace: topics
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      app: svn
+      namespace: topics
+      podindex: "0"

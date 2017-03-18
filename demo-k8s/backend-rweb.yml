@@ -1,0 +1,52 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: svn
+  namespace: topics
+spec:
+  serviceName: "svn"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: svn
+        role: cloud
+        tld: net
+        site: repos
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: svn
+        image: solsson/rweb-httpd@sha256:676f12d8125fc5a8a50bb21778628b831a4052c66d1508b587433424683708db
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: AUTHN
+          value: anon
+        - name: ADMIN_REST_ACCESS
+          value: "true"
+        volumeMounts:
+        - name: datadir
+          mountPath: /svn
+      - name: rweb
+        image: solsson/rweb@sha256:c39b35eb6dc65c1baa165eb6635f16375354328a7edd481927ad12db4a89b6fc
+        ports:
+        - name: rweb
+          containerPort: 9000
+      - name: indexing
+        image: solsson/repos-indexing-svnlook@sha256:e1930902a8f85d13ee8c2663b04be74f509fb44268ad4a445ff15034344bb824
+        args:
+        - -d
+        - /svn
+        - -e
+        # gotcha: this has to be adapted per installation, for URLs in indexed items to be correct
+        - http://svn/svn/
+        - -s
+        - http://solr:8983/solr/
+        volumeMounts:
+        - name: datadir
+          mountPath: /svn
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
