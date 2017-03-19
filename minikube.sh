@@ -35,3 +35,7 @@ kubectl -n $NAMESPACE exec -c svn svn-0 -- repocreate $REPONAME -o daemon
 curl -u "reposetup:" http://$(minikube ip)/svn/$REPONAME/ -k | grep rev
 # indexing doesn't re-run repo discovery
 kubectl -n $NAMESPACE exec -c indexing svn-0 -- kill 1
+
+echo "Done. You might want a hosts file record like: $(minikube ip) topics-demo"
+cat /etc/hosts | grep "$(minikube ip)"
+cat /etc/hosts | grep "topics-demo"
